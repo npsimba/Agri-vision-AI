@@ -1,0 +1,12 @@
+
+Flask
+Flask-Cors
+tensorflow
+numpy
+pandas
+Pillow
+Werkzeug
+scikit-learn
+joblib
+langchain-google-genai
+google-generativeai
