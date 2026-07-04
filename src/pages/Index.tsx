@@ -3,9 +3,7 @@ import { ImageUpload } from "@/components/ImageUpload";
 import { ManualInput } from "@/components/ManualInput";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
-import { Cloud, ChartBar, Sprout, Image, Settings, BarChart2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Sprout, Image, Settings, BarChart2 } from "lucide-react";
 import { FertilizerRecommendation } from "@/components/FertilizerRecommendation";
 
 interface AnalysisResult {
@@ -18,6 +16,12 @@ interface AnalysisResult {
   };
 }
 
+const severityStyles: Record<string, string> = {
+  high: "bg-destructive/10 text-destructive border-destructive/20",
+  medium: "bg-warning/10 text-warning border-warning/20",
+  low: "bg-primary/10 text-primary border-primary/20",
+};
+
 const Index = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -25,6 +29,7 @@ const Index = () => {
 
   const handleImageUpload = async (file: File) => {
     setLoading(true);
+    setResult(null);
     const formData = new FormData();
     formData.append('image', file);
 
@@ -41,13 +46,13 @@ const Index = () => {
       const data = await response.json();
       setResult(data);
       toast({
-        title: "Analysis Complete",
+        title: "Analysis complete",
         description: `Detected: ${data.pestName}`,
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to process image. Please try again.",
+        description: "Couldn't process that image. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -66,7 +71,7 @@ const Index = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to process data. Please try again.",
+        description: "Couldn't process that data. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -75,102 +80,146 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFF0]">
-      <div className="container py-8 space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-[#1A1A1A]">
-            Agricultural Assistant
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Upload an image of the pest affecting your crops or enter crop conditions manually.
-            We'll help identify pests and provide sustainable solutions.
+    <div className="min-h-dvh flex flex-col">
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+        <div className="container flex items-center justify-between py-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Sprout className="h-4 w-4" />
+            </div>
+            <span className="text-lg font-semibold tracking-tight">AgroVision</span>
+          </div>
+          <p className="hidden text-sm text-muted-foreground sm:block">
+            Pest ID · Yield · Fertilizer guidance
           </p>
         </div>
+      </header>
 
-        <Tabs defaultValue="image" className="w-full">
-          <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-3 bg-white/50">
-            <TabsTrigger value="image" className="flex items-center gap-2">
-              <Image className="w-4 h-4" />
-              Image Upload
-            </TabsTrigger>
-            <TabsTrigger value="fertilizer" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Manual Input 
-            </TabsTrigger>
-            <TabsTrigger value="yield" className="flex items-center gap-2">
-              <BarChart2 className="w-4 h-4" />
-              Yield Prediction
-            </TabsTrigger>
-          </TabsList>
+      <main className="flex-1">
+        <div className="container max-w-5xl py-10 sm:py-14 space-y-10">
+          <div className="max-w-2xl space-y-3">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Identify crop pests, predict yield, plan fertilizer
+            </h1>
+            <p className="text-muted-foreground leading-relaxed max-w-[60ch]">
+              Upload a photo of the pest affecting your crop, or enter field conditions
+              manually. We'll identify the pest and suggest pesticides, or estimate yield
+              and fertilizer needs.
+            </p>
+          </div>
 
-          <TabsContent value="image" className="mt-6">
-            <div className="space-y-6">
-              <ImageUpload onImageUpload={handleImageUpload} isLoading={loading} />
-              {result && (
-                <div className="max-w-2xl mx-auto bg-white/80 p-6 rounded-lg shadow-sm">
-                  <h3 className="text-xl font-semibold mb-4">Analysis Results</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-sm text-gray-600">Detected Pest</p>
-                      <p className="font-medium">{result.pestName}</p>
+          <Tabs defaultValue="image" className="w-full">
+            <TabsList className="h-auto w-full max-w-xl justify-start gap-1 rounded-none border-b border-border bg-transparent p-0">
+              <TabsTrigger
+                value="image"
+                className="gap-2 rounded-none border-b-2 border-transparent px-3 py-2.5 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              >
+                <Image className="h-4 w-4" />
+                Image upload
+              </TabsTrigger>
+              <TabsTrigger
+                value="fertilizer"
+                className="gap-2 rounded-none border-b-2 border-transparent px-3 py-2.5 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              >
+                <Settings className="h-4 w-4" />
+                Manual input
+              </TabsTrigger>
+              <TabsTrigger
+                value="yield"
+                className="gap-2 rounded-none border-b-2 border-transparent px-3 py-2.5 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              >
+                <BarChart2 className="h-4 w-4" />
+                Yield prediction
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="image" className="mt-8">
+              <div className="space-y-6">
+                <ImageUpload onImageUpload={handleImageUpload} isLoading={loading} />
+
+                {loading && (
+                  <div className="max-w-2xl mx-auto rounded-xl border border-border bg-card p-6 space-y-4 animate-fadeIn">
+                    <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+                    <div className="h-5 w-48 rounded bg-muted animate-pulse" />
+                    <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                      <div className="absolute inset-y-0 w-1/3 rounded-full bg-primary/60 animate-indeterminate" />
                     </div>
-                    {result.recommendations?.pesticides.length > 0 && (
+                    <p className="text-sm text-muted-foreground">Analyzing image…</p>
+                  </div>
+                )}
+
+                {!loading && result && (
+                  <div className="max-w-2xl mx-auto rounded-xl border border-border bg-card p-6 space-y-5 animate-fadeIn">
+                    <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-sm text-gray-600 mb-2">Recommended Pesticides</p>
+                        <p className="text-sm text-muted-foreground">Detected pest</p>
+                        <p className="text-xl font-semibold tracking-tight">{result.pestName}</p>
+                      </div>
+                      {result.severity && (
+                        <span
+                          className={`shrink-0 rounded-md border px-2.5 py-1 text-xs font-medium capitalize ${
+                            severityStyles[result.severity] ?? severityStyles.low
+                          }`}
+                        >
+                          {result.severity} severity
+                        </span>
+                      )}
+                    </div>
+
+                    {typeof result.confidence === "number" && (
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Confidence</span>
+                          <span className="tabular-nums">{Math.round(result.confidence * 100)}%</span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="h-full rounded-full bg-primary transition-all"
+                            style={{ width: `${Math.round(result.confidence * 100)}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {result.recommendations?.pesticides.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Recommended pesticides</p>
                         <ul className="space-y-2">
                           {result.recommendations.pesticides.map((pesticide, index) => (
-                            <li key={index} className="bg-green-50 p-3 rounded">
-                              <p className="font-medium">{pesticide.name}</p>
-                              <p className="text-sm text-gray-600">{pesticide.description}</p>
+                            <li key={index} className="rounded-lg bg-primary/5 border border-primary/10 p-3">
+                              <p className="font-medium text-sm">{pesticide.name}</p>
+                              <p className="text-sm text-muted-foreground">{pesticide.description}</p>
                             </li>
                           ))}
                         </ul>
                       </div>
                     )}
                   </div>
-                </div>
-              )}
-            </div>
-          </TabsContent>
+                )}
+              </div>
+            </TabsContent>
 
-          <TabsContent value="fertilizer" className="mt-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/80 p-6 rounded-lg shadow-sm">
+            <TabsContent value="fertilizer" className="mt-8">
+              <div className="max-w-4xl rounded-xl border border-border bg-card p-6">
                 <FertilizerRecommendation />
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="yield" className="mt-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/80 p-6 rounded-lg shadow-sm">
+            <TabsContent value="yield" className="mt-8">
+              <div className="max-w-4xl rounded-xl border border-border bg-card p-6">
                 <ManualInput onSubmit={handleManualSubmit} isLoading={loading} />
               </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-          <Card className="bg-white/80 hover:bg-white/90 transition-colors">
-            <CardContent className="p-6 flex items-center space-x-4">
-              <Cloud className="w-6 h-6 text-blue-500" />
-              <div>
-                <h3 className="font-medium">Weather Forecast</h3>
-                <p className="text-sm text-gray-500">Check local weather conditions</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/80 hover:bg-white/90 transition-colors">
-            <CardContent className="p-6 flex items-center space-x-4">
-              <ChartBar className="w-6 h-6 text-green-500" />
-              <div>
-                <h3 className="font-medium">Yield Estimate</h3>
-                <p className="text-sm text-gray-500">View predicted crop yield</p>
-              </div>
-            </CardContent>
-          </Card>
+            </TabsContent>
+          </Tabs>
         </div>
-      </div>
+      </main>
+
+      <footer className="border-t border-border/60">
+        <div className="container py-6 text-sm text-muted-foreground">
+          AgroVision · pest identification covers 132 pest classes via a MobileNetV2 model ·
+          for educational and research use.
+        </div>
+      </footer>
     </div>
   );
 };

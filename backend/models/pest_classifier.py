@@ -2,6 +2,7 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 class PestClassifier:
     def __init__(self, model_path):
@@ -38,7 +39,8 @@ class PestClassifier:
 
     def preprocess_image(self, img_path):
         img = image.load_img(img_path, target_size=(224, 224))
-        img_array = image.img_to_array(img) / 255.0
+        img_array = image.img_to_array(img)
+        img_array = preprocess_input(img_array)
         img_array = np.expand_dims(img_array, axis=0)
         return img_array
 

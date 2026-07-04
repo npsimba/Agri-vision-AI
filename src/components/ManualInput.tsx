@@ -227,7 +227,7 @@ export const ManualInput = ({ onSubmit, isLoading }: ManualInputProps) => {
       </form>
 
       {prediction && (
-        <Card className="bg-green-50">
+        <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-6">
             <h3 className="text-xl font-semibold mb-2">Prediction Results</h3>
             <p className="text-lg">

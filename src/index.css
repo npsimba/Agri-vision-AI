@@ -2,48 +2,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 60 100% 98%;
-    --foreground: 20 14.3% 4.1%;
- 
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
- 
-    --primary: 142 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
- 
-    --secondary: 60 100% 96%;
-    --secondary-foreground: 24 9.8% 10%;
- 
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
- 
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
- 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 100% 98%;
- 
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 142.1 76.2% 36.3%;
- 
-    --radius: 0.5rem;
+    --background: 42 38% 96%;
+    --foreground: 130 15% 12%;
+
+    --card: 40 30% 99%;
+    --card-foreground: 130 15% 12%;
+
+    --popover: 40 30% 99%;
+    --popover-foreground: 130 15% 12%;
+
+    --primary: 142 46% 28%;
+    --primary-foreground: 60 30% 98%;
+
+    --secondary: 42 25% 91%;
+    --secondary-foreground: 130 15% 16%;
+
+    --muted: 42 20% 91%;
+    --muted-foreground: 130 8% 40%;
+
+    --accent: 30 45% 88%;
+    --accent-foreground: 130 15% 16%;
+
+    --destructive: 6 70% 45%;
+    --destructive-foreground: 60 30% 98%;
+
+    --warning: 32 75% 42%;
+    --warning-foreground: 60 30% 98%;
+
+    --border: 130 10% 86%;
+    --input: 130 10% 86%;
+    --ring: 142 46% 28%;
+
+    --radius: 0.75rem;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-[#FFFFF0] text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, hsl(142 40% 88% / 0.5), transparent),
+      radial-gradient(ellipse 700px 500px at 100% 10%, hsl(30 45% 90% / 0.5), transparent);
+    background-attachment: fixed;
   }
+  html {
+    scroll-behavior: smooth;
+  }
+  h1, h2, h3, h4 {
+    @apply tracking-tight text-balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Subtle grain so flat sections don't feel sterile */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .animate-fadeIn {
@@ -59,4 +87,14 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes indeterminate {
+  0% { transform: translateX(-60%) scaleX(0.4); }
+  50% { transform: translateX(20%) scaleX(0.6); }
+  100% { transform: translateX(100%) scaleX(0.4); }
+}
+.animate-indeterminate {
+  animation: indeterminate 1.3s ease-in-out infinite;
+  transform-origin: left;
 }

@@ -4,7 +4,7 @@ import os
 # Flask configuration
 class Config:
     UPLOAD_FOLDER = 'uploads'
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
     MODEL_PATH = "pest_model.h5"
     CSV_PATH = "Pesticides_lowercase.csv"
     
