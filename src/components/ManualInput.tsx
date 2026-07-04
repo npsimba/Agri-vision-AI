@@ -14,8 +14,19 @@ import { Card, CardContent } from "./ui/card";
 import { ChartBar, Cloud } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+export interface YieldFormData {
+  Crop: string;
+  Crop_Year: number;
+  Season: string;
+  State: string;
+  Area: number;
+  Annual_Rainfall: number;
+  Fertilizer: number;
+  Pesticide: number;
+}
+
 interface ManualInputProps {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: YieldFormData) => void;
   isLoading?: boolean;
 }
 

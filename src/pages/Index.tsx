@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ImageUpload } from "@/components/ImageUpload";
-import { ManualInput } from "@/components/ManualInput";
+import { ManualInput, YieldFormData } from "@/components/ManualInput";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sprout, Image, Settings, BarChart2 } from "lucide-react";
@@ -60,7 +60,7 @@ const Index = () => {
     }
   };
 
-  const handleManualSubmit = async (data: any) => {
+  const handleManualSubmit = async (data: YieldFormData) => {
     setLoading(true);
     try {
       // Backend integration will be added here
