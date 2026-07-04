@@ -209,9 +209,9 @@ export const FertilizerRecommendation = () => {
           <Card>
             <CardContent className="p-6">
               <h4 className="text-lg font-semibold mb-4">Error</h4>
-              <p className="text-sm text-gray-600">{recommendations.error}</p>
+              <p className="text-sm text-muted-foreground">{recommendations.error}</p>
               {recommendations.raw && (
-                <pre className="text-sm text-gray-600">{recommendations.raw}</pre>
+                <pre className="text-sm text-muted-foreground">{recommendations.raw}</pre>
               )}
             </CardContent>
           </Card>
@@ -224,12 +224,12 @@ export const FertilizerRecommendation = () => {
               {recommendations.predicted_pest ? (
                 <div className="mb-4">
                   <h5 className="font-semibold">Predicted Pest</h5>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     {recommendations.predicted_pest.name} – {recommendations.predicted_pest.explanation}
                   </p>
                 </div>
               ) : (
-                <p className="text-sm text-gray-600">No pest prediction available.</p>
+                <p className="text-sm text-muted-foreground">No pest prediction available.</p>
               )}
 
               {/* Pesticides Section */}
@@ -237,10 +237,10 @@ export const FertilizerRecommendation = () => {
                 <div className="mb-4">
                   <h5 className="font-semibold">Recommended Pesticides</h5>
                   {recommendations.pesticides.map((item, index) => (
-                    <div key={index} className="p-4 bg-green-50 rounded-lg mb-2">
+                    <div key={index} className="p-4 bg-primary/5 border border-primary/10 rounded-lg mb-2">
                       <h6 className="font-semibold">{item.name}</h6>
-                      <p className="text-sm text-gray-600">{item.description}</p>
-                      <p className="text-sm text-gray-600">Dosage: {item.dosage}</p>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <p className="text-sm text-muted-foreground">Dosage: {item.dosage}</p>
                     </div>
                   ))}
                 </div>
@@ -251,10 +251,10 @@ export const FertilizerRecommendation = () => {
                 <div>
                   <h5 className="font-semibold">Recommended Fertilizers</h5>
                   {recommendations.fertilizers.map((item, index) => (
-                    <div key={index} className="p-4 bg-green-50 rounded-lg mb-2">
+                    <div key={index} className="p-4 bg-primary/5 border border-primary/10 rounded-lg mb-2">
                       <h6 className="font-semibold">{item.name}</h6>
-                      <p className="text-sm text-gray-600">{item.description}</p>
-                      <p className="text-sm text-gray-600">Dosage: {item.dosage}</p>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <p className="text-sm text-muted-foreground">Dosage: {item.dosage}</p>
                     </div>
                   ))}
                 </div>

@@ -14,8 +14,19 @@ import { Card, CardContent } from "./ui/card";
 import { ChartBar, Cloud } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+export interface YieldFormData {
+  Crop: string;
+  Crop_Year: number;
+  Season: string;
+  State: string;
+  Area: number;
+  Annual_Rainfall: number;
+  Fertilizer: number;
+  Pesticide: number;
+}
+
 interface ManualInputProps {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: YieldFormData) => void;
   isLoading?: boolean;
 }
 
@@ -227,7 +238,7 @@ export const ManualInput = ({ onSubmit, isLoading }: ManualInputProps) => {
       </form>
 
       {prediction && (
-        <Card className="bg-green-50">
+        <Card className="bg-primary/5 border-primary/10">
           <CardContent className="p-6">
             <h3 className="text-xl font-semibold mb-2">Prediction Results</h3>
             <p className="text-lg">

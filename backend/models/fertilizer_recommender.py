@@ -12,14 +12,23 @@ class FertilizerRecommender:
             HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
             HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
         }
-        
-        # Initialize the Gemini AI model
-        self.chat_model = ChatGoogleGenerativeAI(
-            model="gemini-1.5-pro",
-            google_api_key="AIzaSyBRmkSyw-LAU-kHaDG7tki_n2oC0VQh61M",
-            temperature=0.3,
-            safety_settings=self.safety_settings
-        )
+        self.chat_model = None
+
+    def _get_chat_model(self):
+        if self.chat_model is None:
+            api_key = os.environ.get("GOOGLE_API_KEY")
+            if not api_key:
+                raise RuntimeError(
+                    "GOOGLE_API_KEY environment variable is not set. "
+                    "Set it in backend/.env or your shell before using fertilizer recommendations."
+                )
+            self.chat_model = ChatGoogleGenerativeAI(
+                model="gemini-1.5-pro",
+                google_api_key=api_key,
+                temperature=0.3,
+                safety_settings=self.safety_settings
+            )
+        return self.chat_model
 
     def get_recommendations(self, data):
         composite_prompt = f"""
@@ -63,7 +72,7 @@ class FertilizerRecommender:
         """
 
         # Call the Gemini AI model
-        response = self.chat_model.invoke(composite_prompt)
+        response = self._get_chat_model().invoke(composite_prompt)
 
         # Extract response safely
         if hasattr(response, "content"):

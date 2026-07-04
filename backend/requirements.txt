@@ -10,3 +10,5 @@ scikit-learn
 joblib
 langchain-google-genai
 google-generativeai
+python-dotenv
+requests
