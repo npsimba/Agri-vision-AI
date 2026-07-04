@@ -5,7 +5,8 @@ import os
 
 class YieldPredictor:
     def __init__(self):
-        self.model = self._load_model()
+        self.model = (self._load_model
+                      ())
         self.scaler = self._load_scaler()
         self.label_encoders = self._load_encoders()
 

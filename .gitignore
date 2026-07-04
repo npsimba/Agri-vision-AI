@@ -22,3 +22,33 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# ML models
+*.h5
+*.pt
+*.pth
+*.onnx
+*.ckpt
+
+# Dataset
+data/
+
+# Build
+build/
+target/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+Thumbs.db
