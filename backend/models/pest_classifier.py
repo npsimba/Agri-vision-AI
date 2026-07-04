@@ -1,4 +1,3 @@
-
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
@@ -6,7 +5,7 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 class PestClassifier:
     def __init__(self, model_path):
-        self.model = tf.keras.models.load_model(model_path)
+        self.model = tf.keras.models.load_model(model_path, compile=False)
         self.class_labels = [
             "adristyrannus", "aleurocanthus spiniferus", "alfalfa plant bug", "alfalfa seed chalcid", "alfalfa weevil",
             "ampelophaga", "aphids", "aphis citricola vander goot", "apolygus lucorum", "army worm",
@@ -49,6 +48,6 @@ class PestClassifier:
         pest_pred = self.model.predict(img_array)
         predicted_pest_index = np.argmax(pest_pred)
         confidence = float(pest_pred[0][predicted_pest_index])
-        
+
         predicted_pest = self.class_labels[predicted_pest_index] if predicted_pest_index < len(self.class_labels) else "Unknown Pest"
         return predicted_pest, confidence

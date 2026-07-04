@@ -36,11 +36,11 @@ def analyze_image():
 
     if 'image' not in request.files:
         return jsonify({'error': 'No image provided'}), 400
-    
+
     file = request.files['image']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
-    
+
     if file and allowed_file(file.filename, app.config['ALLOWED_EXTENSIONS']):
         try:
             filepath = save_file(file, app.config['UPLOAD_FOLDER'])
@@ -49,7 +49,7 @@ def analyze_image():
                 pesticide_recommender.get_recommendations(pest_name)
                 if pesticide_recommender is not None else []
             )
-            
+
             result = {
                 "pestName": pest_name,
                 "confidence": confidence,
@@ -59,15 +59,15 @@ def analyze_image():
                     "fertilizers": []
                 }
             }
-            
+
             return jsonify(result)
-            
+
         except Exception as e:
             return jsonify({'error': str(e)}), 500
-        
+
         finally:
             cleanup_file(filepath)
-    
+
     return jsonify({'error': 'Invalid file type'}), 400
 
 @app.route('/api/predict-yield', methods=['POST'])
@@ -77,7 +77,6 @@ def predict_yield():
 
     try:
         data = request.json
-        print(data)
         if not data:
             return jsonify({'error': 'No data provided'}), 400
 
